@@ -16,7 +16,7 @@ macro_rules! key {
 				}
 			}
 
-			pub(crate) fn as_bytes(&self) -> &[u8; SIZE] {
+			pub fn as_bytes(&self) -> &[u8; SIZE] {
 				&self.bytes
 			}
 		}
