@@ -1,0 +1,20 @@
+[package]
+name = "qvault"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+# randomness
+rand = { version = "0.8.5" }
+
+# ed25519
+ed25519-dalek = { version = "2.1.1" }
+
+# encoding
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+base64 = { version = "0.13" }
+
+# crypto
+sha2 = { version = "0.10" }
