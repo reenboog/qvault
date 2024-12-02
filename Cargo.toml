@@ -18,3 +18,4 @@ base64 = { version = "0.13" }
 
 # crypto
 sha2 = { version = "0.10" }
+hmac = { version = "0.12.1" }
