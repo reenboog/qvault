@@ -1,10 +1,13 @@
+mod aes_gcm;
 mod base64_blobs;
 pub mod ed25519;
 pub mod encrypted;
+mod hkdf;
 mod hmac;
 pub mod id;
 mod key;
 mod key_pair;
+mod kyber;
 mod private_key;
 mod public_key;
 mod salt;
