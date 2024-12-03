@@ -12,6 +12,7 @@ mod key_pair;
 mod kyber;
 mod password_lock;
 mod private_key;
+pub mod protocol;
 mod public_key;
 mod register;
 mod salt;

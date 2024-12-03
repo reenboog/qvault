@@ -7,8 +7,8 @@ use serde::{Deserialize, Serialize};
 	deserialize = "PrivateKey<T, PRIV_SIZE>: Deserialize<'de>, PublicKey<T, PUB_SIZE>: Deserialize<'de>"
 ))]
 pub struct KeyPair<T, const PRIV_SIZE: usize, const PUB_SIZE: usize> {
-	pub(crate) private: PrivateKey<T, PRIV_SIZE>,
-	pub(crate) public: PublicKey<T, PUB_SIZE>,
+	pub private: PrivateKey<T, PRIV_SIZE>,
+	pub public: PublicKey<T, PUB_SIZE>,
 }
 
 impl<T, const PRIV_SIZE: usize, const PUB_SIZE: usize> KeyPair<T, PRIV_SIZE, PUB_SIZE> {

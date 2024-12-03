@@ -14,7 +14,7 @@ pub struct Salt {
 		serialize_with = "serialize_array_base64::<_, SALT_SIZE>",
 		deserialize_with = "deserialize_array_base64::<_, SALT_SIZE>"
 	)]
-	pub(crate) bytes: [u8; Self::SIZE],
+	pub bytes: [u8; Self::SIZE],
 }
 
 impl Salt {

@@ -54,9 +54,9 @@ pub struct Lock {
 		serialize_with = "serialize_vec_base64",
 		deserialize_with = "deserialize_vec_base64"
 	)]
-	pub(crate) ct: Vec<u8>,
+	pub ct: Vec<u8>,
 	// master_key encrypted with pass
-	pub(crate) master_key: Encrypted,
+	pub master_key: Encrypted,
 }
 
 pub fn lock<T>(pt: &T, pass: &str) -> Result<Lock, Error>

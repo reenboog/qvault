@@ -11,26 +11,26 @@ use sha2::{Digest, Sha256};
 pub struct Uid(u64);
 
 impl Uid {
-	pub(crate) fn new(v: u64) -> Self {
+	pub fn new(v: u64) -> Self {
 		Self(v)
 	}
 
-	pub(crate) fn generate() -> Self {
+	pub fn generate() -> Self {
 		let mut rng = OsRng;
 		Self(rng.gen())
 	}
 
-	pub(crate) fn from_bytes(bytes: &[u8]) -> Self {
+	pub fn from_bytes(bytes: &[u8]) -> Self {
 		Self(u64::from_be_bytes(
 			Sha256::digest(bytes).to_vec()[..8].try_into().unwrap(),
 		))
 	}
 
-	pub(crate) fn as_bytes(&self) -> [u8; 8] {
+	pub fn as_bytes(&self) -> [u8; 8] {
 		self.0.to_be_bytes()
 	}
 
-	pub(crate) fn to_base64(&self) -> String {
+	pub fn to_base64(&self) -> String {
 		base64::encode_config(&self.0.to_be_bytes(), base64::URL_SAFE)
 	}
 }

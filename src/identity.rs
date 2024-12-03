@@ -14,15 +14,15 @@ use crate::{
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct Identity {
-	pub(crate) _priv: Private,
-	pub(crate) _pub: Public,
+	pub _priv: Private,
+	pub _pub: Public,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct Private {
-	pub(crate) x448: PrivateKeyX448,
-	pub(crate) ed25519: PrivateKeyEd25519,
-	pub(crate) kyber: PrivateKeyKyber,
+	pub x448: PrivateKeyX448,
+	pub ed25519: PrivateKeyEd25519,
+	pub kyber: PrivateKeyKyber,
 }
 
 #[derive(Debug)]
@@ -49,11 +49,11 @@ impl Private {
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct Public {
 	// created by by the inviting party (unless god)
-	pub(crate) id: Uid,
+	pub id: Uid,
 	// can be used to encrypt messages to or verify signatures against
-	pub(crate) x448: PublicKeyX448,
-	pub(crate) ed25519: PublicKeyEd25519,
-	pub(crate) kyber: PublicKeyKyber,
+	pub x448: PublicKeyX448,
+	pub ed25519: PublicKeyEd25519,
+	pub kyber: PublicKeyKyber,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
@@ -151,11 +151,11 @@ impl Identity {
 		}
 	}
 
-	pub(crate) fn public(&self) -> &Public {
+	pub fn public(&self) -> &Public {
 		&self._pub
 	}
 
-	pub(crate) fn private(&self) -> &Private {
+	pub fn private(&self) -> &Private {
 		&self._priv
 	}
 }

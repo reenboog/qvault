@@ -26,9 +26,9 @@ pub enum Error {
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct FileInfo {
-	pub(crate) size: u32,
-	pub(crate) key_iv: Aes,
-	pub(crate) ext: String,
+	pub size: u32,
+	pub key_iv: Aes,
+	pub ext: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -55,11 +55,11 @@ impl LockedEntry {
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-pub(crate) struct LockedNode {
-	pub(crate) id: Uid,
-	pub(crate) parent_id: Uid,
-	pub(crate) content: Encrypted,
-	pub(crate) dirty: bool,
+pub struct LockedNode {
+	pub id: Uid,
+	pub parent_id: Uid,
+	pub content: Encrypted,
+	pub dirty: bool,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -74,9 +74,9 @@ struct LockedContent {
 	entry: LockedEntry,
 }
 
-pub(crate) struct NewNodeReq {
-	pub(crate) node: Node,
-	pub(crate) locked_node: LockedNode,
+pub struct NewNodeReq {
+	pub node: Node,
+	pub locked_node: LockedNode,
 }
 
 impl LockedContent {
@@ -123,19 +123,19 @@ impl LockedContent {
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub(crate) struct Node {
-	pub(crate) id: Uid,
-	pub(crate) parent_id: Uid,
+pub struct Node {
+	pub id: Uid,
+	pub parent_id: Uid,
 	pub created_at: u64,
 	pub name: String,
-	pub(crate) entry: Entry,
+	pub entry: Entry,
 	pub dirty: bool,
-	pub(crate) created_by: identity::Public,
+	pub created_by: identity::Public,
 	// last_edited_by
 }
 
 #[derive(Clone, Debug)]
-pub(crate) enum Entry {
+pub enum Entry {
 	File { info: FileInfo },
 	Dir { seed: Seed, children: Vec<Node> },
 }
@@ -233,7 +233,7 @@ impl Node {
 }
 
 #[derive(PartialEq, Debug, Clone)]
-pub(crate) struct FileSystem {
+pub struct FileSystem {
 	// a user can have multiple top-level shares belonging to different
 	// subtrees, therefore more than one root is possible
 	roots: Vec<Node>,
@@ -241,15 +241,8 @@ pub(crate) struct FileSystem {
 	cached_seeds: Seeds,
 }
 
-pub(crate) const NO_PARENT_ID: u64 = u64::MAX;
+pub const NO_PARENT_ID: u64 = u64::MAX;
 
-#[cfg(target_arch = "wasm32")]
-fn now() -> u64 {
-	use js_sys::Date;
-	Date::now() as u64
-}
-
-#[cfg(not(target_arch = "wasm32"))]
 fn now() -> u64 {
 	use std::time::{SystemTime, UNIX_EPOCH};
 	let duration = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();

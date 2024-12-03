@@ -12,8 +12,8 @@ use crate::{
 	vault::LockedNode,
 };
 
-pub(crate) const SEED_SIZE: usize = 32;
-pub(crate) const ROOT_ID: u64 = 0;
+pub const SEED_SIZE: usize = 32;
+pub const ROOT_ID: u64 = 0;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone, Hash)]
 pub struct Seed {
@@ -21,7 +21,7 @@ pub struct Seed {
 		serialize_with = "serialize_array_base64::<_, SEED_SIZE>",
 		deserialize_with = "deserialize_array_base64::<_, SEED_SIZE>"
 	)]
-	pub(crate) bytes: [u8; SEED_SIZE],
+	pub bytes: [u8; SEED_SIZE],
 }
 
 impl Seed {
@@ -37,17 +37,17 @@ impl Seed {
 // sender can share as many bundles as he wants
 pub struct Import {
 	// no sig is required here; validate LockedShare instead
-	pub(crate) sender: identity::Public,
-	pub(crate) bundle: Bundle,
+	pub sender: identity::Public,
+	pub bundle: Bundle,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Export {
 	// no sig is required here; validate LockedShare instead
-	pub(crate) receiver: Uid,
+	pub receiver: Uid,
 	// these are ids of the exported seeds
-	pub(crate) fs: Vec<Uid>,
-	pub(crate) db: Vec<Uid>,
+	pub fs: Vec<Uid>,
+	pub db: Vec<Uid>,
 }
 
 pub trait Sorted {
@@ -89,54 +89,54 @@ impl Export {
 		hmac::Digest(sha.into())
 	}
 }
-pub(crate) fn ctx_to_sign(sender: &identity::Public, export: &Export) -> Vec<u8> {
+pub fn ctx_to_sign(sender: &identity::Public, export: &Export) -> Vec<u8> {
 	[sender.id().as_bytes().as_slice(), export.hash().as_bytes()].concat()
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 // when unlocking, the backend is to return all LockedShare where id == sender.id() || export.receiver
 pub struct LockedShare {
-	pub(crate) sender: identity::Public,
+	pub sender: identity::Public,
 	// ids of the share (convenient to return roots to unlock)
-	pub(crate) export: Export,
+	pub export: Export,
 	// encrypted content of the share
-	pub(crate) payload: identity::Encrypted,
+	pub payload: identity::Encrypted,
 	// sign({ sender, exports })
-	pub(crate) sig: ed25519::Signature,
+	pub sig: ed25519::Signature,
 }
 
 // used by pin-based invites only
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct Invite {
-	pub(crate) user_id: Uid,
+	pub user_id: Uid,
 	// pin needs to be shared through a trusted channel, so no need to sign
-	pub(crate) sender: identity::Public,
-	pub(crate) ref_src: String,
+	pub sender: identity::Public,
+	pub ref_src: String,
 	// encrypted Bundle
-	pub(crate) payload: password_lock::Lock,
-	pub(crate) export: Export,
+	pub payload: password_lock::Lock,
+	pub export: Export,
 	// sign({ sender, exports })
-	pub(crate) sig: ed25519::Signature,
+	pub sig: ed25519::Signature,
 }
 
 // a pin-less invite intent that should be later acknowledged
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct InviteIntent {
 	// email or activation code – anything used to sign up
-	pub(crate) ref_src: String,
-	pub(crate) sender: identity::Public,
+	pub ref_src: String,
+	pub sender: identity::Public,
 	// sign(sender + ref_src + user_id)
-	pub(crate) sig: ed25519::Signature,
-	pub(crate) user_id: Uid,
+	pub sig: ed25519::Signature,
+	pub user_id: Uid,
 	// receiver's pk which the sender is to use to finally encrypt the previously selected seeds
-	pub(crate) receiver: Option<identity::Public>,
+	pub receiver: Option<identity::Public>,
 	// None means `root`
-	pub(crate) fs_ids: Option<Vec<Uid>>,
-	pub(crate) db_ids: Option<Vec<database::Index>>,
+	pub fs_ids: Option<Vec<Uid>>,
+	pub db_ids: Option<Vec<database::Index>>,
 }
 
 impl InviteIntent {
-	pub(crate) fn ctx_to_sign(
+	pub fn ctx_to_sign(
 		sender: &Uid,
 		ref_src: &str,
 		receiver: &Uid,
@@ -165,20 +165,20 @@ impl InviteIntent {
 #[derive(Serialize, Deserialize)]
 pub struct FinishInviteIntent {
 	// email or activation code
-	pub(crate) ref_src: String,
-	pub(crate) share: LockedShare,
+	pub ref_src: String,
+	pub share: LockedShare,
 }
 
 // used by pin-based invites only
 #[derive(Serialize, Deserialize)]
 pub struct Welcome {
-	pub(crate) user_id: Uid,
-	pub(crate) sender: identity::Public,
-	pub(crate) imports: password_lock::Lock,
+	pub user_id: Uid,
+	pub sender: identity::Public,
+	pub imports: password_lock::Lock,
 	// = Invite::sig
-	pub(crate) sig: ed25519::Signature,
+	pub sig: ed25519::Signature,
 	// TODO: get_nodes(invite.export.fs.ids)
-	pub(crate) nodes: Vec<LockedNode>,
+	pub nodes: Vec<LockedNode>,
 }
 
 pub type Seeds = HashMap<Uid, Seed>;
@@ -200,7 +200,7 @@ pub struct Bundle {
 }
 
 impl Bundle {
-	pub(crate) fn new() -> Self {
+	pub fn new() -> Self {
 		Self {
 			fs: Seeds::new(),
 			db: Seeds::new(),
