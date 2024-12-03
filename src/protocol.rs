@@ -155,14 +155,21 @@ impl Network for NoNetwork {
 }
 
 impl Protocol {
-	pub fn new_no_network(
-		ident_priv: identity::Private,
-		locked: LockedUser,
-	) -> Result<Self, Error> {
-		Self::new(ident_priv, locked, Box::new(NoNetwork))
+	pub fn new_no_network(ident_priv: identity::Private, locked_json: &str) -> Result<Self, Error> {
+		Self::new(ident_priv, locked_json, Box::new(NoNetwork))
 	}
 
 	fn new(
+		ident_priv: identity::Private,
+		lcoked_json: &str,
+		net: Box<dyn Network>,
+	) -> Result<Self, Error> {
+		let locked: LockedUser = serde_json::from_str(lcoked_json).map_err(|_| Error::BadJson)?;
+
+		Self::new_with_params(ident_priv, locked, net)
+	}
+
+	fn new_with_params(
 		ident_priv: identity::Private,
 		locked: LockedUser,
 		net: Box<dyn Network>,
