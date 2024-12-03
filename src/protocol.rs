@@ -43,6 +43,7 @@ impl DirView {
 		self.items.clone()
 	}
 
+	// in reversed order: grand-grandparent, grandparent, parent
 	pub fn breadcrumbs(&self) -> Vec<NodeView> {
 		self.breadcrumbs.clone()
 	}
