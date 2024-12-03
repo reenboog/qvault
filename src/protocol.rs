@@ -145,8 +145,24 @@ impl TryFrom<Node> for DirView {
 	}
 }
 
+struct NoNetwork;
+
+#[async_trait(?Send)]
+impl Network for NoNetwork {
+	async fn fetch_subtree(&self, _id: Uid) -> Result<Vec<LockedNode>, Error> {
+		todo!("fetch_subtree is not implemented for Protocol<NoNetwork>");
+	}
+}
+
 impl Protocol {
-	pub fn new(
+	pub fn new_no_network(
+		ident_priv: identity::Private,
+		locked: LockedUser,
+	) -> Result<Self, Error> {
+		Self::new(ident_priv, locked, Box::new(NoNetwork))
+	}
+
+	fn new(
 		ident_priv: identity::Private,
 		locked: LockedUser,
 		net: Box<dyn Network>,
