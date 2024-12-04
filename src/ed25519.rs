@@ -56,8 +56,7 @@ pub type KeyPairEd25519 =
 impl KeyPairEd25519 {
 	pub fn generate() -> Self {
 		let private = PrivateKeyEd25519::generate();
-		let signing_key = ed25519_dalek::SigningKey::from_bytes(private.as_bytes());
-		let public = PublicKeyEd25519::from(signing_key.verifying_key().as_bytes());
+		let public = PublicKeyEd25519::from_private(&private);
 
 		Self::new(private, public)
 	}
@@ -96,6 +95,14 @@ impl TryFrom<&PublicKeyEd25519> for ed25519_dalek::VerifyingKey {
 }
 
 impl PublicKeyEd25519 {
+	pub fn from_private(key: &PrivateKeyEd25519) -> Self {
+		Self::from(
+			ed25519_dalek::SigningKey::from_bytes(key.as_bytes())
+				.verifying_key()
+				.as_bytes(),
+		)
+	}
+
 	pub fn verify(&self, msg: &[u8], signature: &Signature) -> bool {
 		use ed25519_dalek::Verifier;
 
